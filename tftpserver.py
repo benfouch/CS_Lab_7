@@ -1,5 +1,4 @@
 """
-- NOTE: REPLACE 'N' Below with your section, year, and lab number
 - CS2911 - 011
 - Fall 2021
 - Lab 7 - TFTP Server
@@ -11,16 +10,13 @@
 A Trivial File Transfer Protocol Server
 
 Introduction: (Describe the lab in your own words)
-
-
-
-
+    This lab is to teach us how tftp works by having us implement a tftp sever with UDP. The requests will be sent
+     from the terminal thorough the windows tftp tool
 Summary: (Summarize your experience with the lab, what you learned, what you liked,what you disliked, and any suggestions you have for improvement)
-
-
-
-
-
+    The lab was great, we were able to work thorough our design pretty quickly in class, and then implement it outside
+    of class. There was defiantly lots of clarification made by this la. Theres just some things you can understand
+    until you try it. I think that were getting pretty good at implementing these protocols, some of fundamentals of how
+     these socket messages are sent are definitely sticking for us.
 """
 
 # import modules -- not using "from socket import *" in order to selectively use items with "socket." prefix
@@ -118,6 +114,10 @@ def socket_setup():
 # Write additional helper functions starting here  #
 ####################################################
 def parse_request(udp_socket):
+    """
+    Takes in a socket and gets the request being sent on it
+    :author: Nate Cernik
+    """
     (req_bytes, client_addr) = udp_socket.recvfrom(MAX_UDP_PACKET_SIZE)
     op_code = req_bytes[0:2]
     req_bytes = req_bytes[2:len(req_bytes)]
@@ -135,7 +135,10 @@ def parse_request(udp_socket):
 
 
 def send_response(op_code, filename, mode, send_socket, client_addr):
-
+    """
+    Sends a response to the requester based on the paarams passed in
+    :author: All
+    """
     try:
         if op_code == 1:
             block_count = get_file_block_count(filename)
@@ -170,7 +173,10 @@ def send_response(op_code, filename, mode, send_socket, client_addr):
 
 
 def parse_acknowledgement(udp_socket):
-
+    """
+    takes in the ack and gets the most recent block that was recived
+    :author: Nate Cernik
+    """
     ack_bytes = udp_socket.recvfrom(MAX_UDP_PACKET_SIZE)[0]
     op_code = ack_bytes[0:2]
     ack_num = ack_bytes[2:4]
